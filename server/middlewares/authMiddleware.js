@@ -1,4 +1,4 @@
-
+import authMiddleware from "../middlewares/authMiddleware.js";
 export const protect = async (req, res, next) => {
     try {
 
