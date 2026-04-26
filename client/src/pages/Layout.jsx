@@ -33,10 +33,10 @@ const Layout = () => {
 
     // Fetch workspaces properly
     useEffect(() => {
-        if (isLoaded && user) {
-            dispatch(fetchWorkspaces({ getToken }))
-        }
-    }, [user, isLoaded])
+    if (isLoaded && user) {
+        dispatch(fetchWorkspaces({ getToken }))
+    }
+}, [isLoaded])
 
     // If not logged in
     if (!user) {
