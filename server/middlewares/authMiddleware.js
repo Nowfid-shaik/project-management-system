@@ -1,16 +1,24 @@
-import authMiddleware from "../middlewares/authMiddleware.js";
-export const protect = async (req, res, next) => {
-    try {
+import { getAuth } from "@clerk/express";
 
-        const { userId } = await req.auth()
+export const protect = (req, res, next) => {
+  try {
+    const { userId } = getAuth(req);
 
-        if (!userId) {
-            return res.status(401).json({ message: "Unauthorized" });
-        }
-
-        return next();
-    } catch (error) {
-        console.log(error);
-        res.status(401).json({ message: error.code || error.message });
+    if (!userId) {
+      return res.status(401).json({
+        message: "Unauthorized"
+      });
     }
+
+    req.userId = userId;
+
+    next();
+
+  } catch (error) {
+    console.error(error);
+
+    return res.status(401).json({
+      message: "Authentication failed"
+    });
+  }
 };
