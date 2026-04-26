@@ -8,20 +8,31 @@ import ProjectDetails from './pages/ProjectDetails'
 import TaskDetails from './pages/TaskDetails'
 
 const App = () => {
-    return (
-        <>
-            <Toaster />
-            <Routes>
-                <Route path="/" element={<Layout />}>
-                    <Route index element={<Dashboard />} />
-                    <Route path="team" element={<Team />} />
-                    <Route path="projects" element={<Projects />} />
-                    <Route path="projectsDetail" element={<ProjectDetails />} />
-                    <Route path='taskDetails' element={<TaskDetails/>} />
-                </Route>
-            </Routes>
-        </>
-    )
+  return (
+    <>
+      <Toaster />
+
+      <Routes>
+
+        <Route path="/" element={<Layout />}>
+
+          {/* ROOT dashboard */}
+          <Route index element={<Dashboard />} />
+
+          {/* ADD THIS LINE */}
+          <Route path="dashboard" element={<Dashboard />} />
+
+          <Route path="team" element={<Team />} />
+          <Route path="projects" element={<Projects />} />
+          <Route path="projectDetails" element={<ProjectDetails />} />
+          <Route path="taskDetails" element={<TaskDetails />} />
+
+        </Route>
+
+      </Routes>
+
+    </>
+  )
 }
 
 export default App
