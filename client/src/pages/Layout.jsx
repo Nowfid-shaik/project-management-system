@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import Navbar from '../components/Navbar'
 import Sidebar from '../components/Sidebar'
 import { Outlet } from 'react-router-dom'
-import { CreateOrganization, SignIn, useUser, useOrganizationList } from '@clerk/clerk-react'
+import { CreateOrganization, SignIn, useAuth, useUser, useOrganizationList } from '@clerk/clerk-react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchWorkspaces } from '../features/workspaceSlice'
 import { loadTheme } from '../features/themeSlice'
@@ -13,6 +13,8 @@ const Layout = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
     const { user, isLoaded } = useUser()
+
+    const { getToken } = useAuth()
 
     const { userMemberships } =
         useOrganizationList({
@@ -29,10 +31,10 @@ const Layout = () => {
         dispatch(loadTheme())
     }, [])
 
-    // Fetch workspaces
+    // Fetch workspaces properly
     useEffect(() => {
         if (isLoaded && user) {
-            dispatch(fetchWorkspaces())
+            dispatch(fetchWorkspaces({ getToken }))
         }
     }, [user, isLoaded])
 
@@ -45,7 +47,7 @@ const Layout = () => {
         )
     }
 
-    // Show loader while fetching
+    // Loading spinner
     if (loading) {
         return (
             <div className='flex items-center justify-center h-screen bg-white dark:bg-zinc-950'>
@@ -54,7 +56,7 @@ const Layout = () => {
         )
     }
 
-    // Show Create Organization ONLY if user has none
+    // Only show CreateOrganization if user truly has none
     if (
         userMemberships?.data?.length === 0
     ) {
